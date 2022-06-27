@@ -1,5 +1,5 @@
 import random
-
+import PySide2
 
 class Game:
     """Класс описывающий игру 2048 и её основные методы"""
