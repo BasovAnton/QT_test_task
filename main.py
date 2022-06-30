@@ -1,30 +1,43 @@
 import random
-import PySide2
+
 
 class Game:
     """Класс описывающий игру 2048 и её основные методы"""
     def __init__(self):
-        self.field = [[0 for _ in range(4)] for _ in range(4)]  # Инициализируем поле для игры.
-
-    def print_field(self) -> None:   # Метод печатающий поле в консоль, нужен только в консольной версии игры.
-        for line in self.field:
-            print(line)
-        print("-" * 12)
-
-    def clear_fild(self) -> None:  # Метод создающий новое, чистое поле.
         self.field = [[0 for _ in range(4)] for _ in range(4)]
 
-    def check_add(self) -> bool:  # Метод проверяющий наличие доступных для хода клеток.
+    def clear_field(self) -> None:  # Метод создающий новое, чистое поле.
+        self.field = [[0 for _ in range(4)] for _ in range(4)]
+
+    def check_win(self) -> bool:  # проверка победы.
+        for line in self.field:
+            if 2048 in line:
+                return True
+            return False
+
+    def check_add(self) -> bool:  # Наличие ходов.
         for line in self.field:
             if 0 in line:
                 return True
         return False
 
-    def check_win(self) -> bool:  # Метод проверяющий победил ли игрок.
+    def show_score(self) -> int:  # Счетчик максимального числа
+        max_value = 0
         for line in self.field:
-            if 2048 in line:
-                return True
-            return False
+            for value in line:
+                if value > max_value:
+                    max_value = value
+        return max_value
+
+    def input_play(self, input_) -> None:  # Метод вызывающий слияние в сторону, выбранную игроком.
+        if input_ == 'w':
+            self.merge_up()
+        if input_ == 's':
+            self.merge_down()
+        if input_ == 'a':
+            self.merge_left()
+        if input_ == 'd':
+            self.merge_right()
 
     def add_two(self) -> None:  # Метод создающий список возможных клеток для добавления двойки и добавляющий её.
         list_of_moves = []
@@ -80,38 +93,3 @@ class Game:
                     sorted_field[index_line].insert(count, value)
                     count += 1
         self.field = sorted_field
-
-    def input_play(self, input_) -> None:  # Метод вызывающий слияние в сторону, выбранную игроком.
-        if input_ == 'w':
-            self.merge_up()
-        if input_ == 's':
-            self.merge_down()
-        if input_ == 'a':
-            self.merge_left()
-        if input_ == 'd':
-            self.merge_right()
-
-    def show_score(self) -> int:  # Метод возвращающий максимальное значение на игровом поле.
-        max_value = 0
-        for line in self.field:
-            for value in line:
-                if value > max_value:
-                    max_value = value
-        return max_value
-
-    @staticmethod
-    def start():
-        x = Game()
-        print("Начинаем игру")
-        while x.check_add():
-            x.add_two()
-            x.print_field()
-            x.input_play(input())
-            if x.check_win():
-                print('Поздравляю!!!')
-                break
-
-
-if __name__ == '__main__':
-    Game.start()
-
