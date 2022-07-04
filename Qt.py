@@ -19,11 +19,34 @@ class Window(QtWidgets.QWidget):
         self.ui.pushButton_left.clicked.connect(self.turn_player)
         self.ui.pushButton_right.clicked.connect(self.turn_player)
 
-
     def keyPressEvent(self, event:PySide2.QtGui.QKeyEvent) -> None:
+        print(event.text())
 
         if event.text().lower() in ['w', 'ц']:
-            self.turn_player(event.text().lower())
+            self.turn_player('w')
+
+        if event.text().lower() in ['s', 'ы']:
+            self.turn_player('s')
+
+        if event.text().lower() in ['a', 'ф']:
+            self.turn_player('a')
+
+        if event.text().lower() in ['d', 'в']:
+            self.turn_player('d')
+
+    def keyReleaseEvent(self, event:PySide2.QtGui.QKeyEvent) -> None:
+        print(event.key())
+        if event.key() == 16777235:
+            self.turn_player('w')
+
+        if event.key() == 16777237:
+            self.turn_player('s')
+
+        if event.key() == 16777234:
+            self.turn_player('a')
+
+        if event.key() == 16777236:
+            self.turn_player('d')
 
     @QtCore.Slot()
     def display_output(self):
@@ -49,16 +72,16 @@ class Window(QtWidgets.QWidget):
         self.display_output()
 
     @QtCore.Slot()
-    def turn_player(self, key=None):
+    def turn_player(self, key=False):
         tern = {"Вверх": "w",
                 "Вниз": "s",
                 "Влево": "a",
                 "Вправо": "d"}
-        if key is None:
+        print(key)
+        if key is False:
             x.input_play(tern.get(self.sender().text()))
         else:
             x.input_play(key)
-        self.display_output()
         x.add_two()
         self.display_output()
         self.ui.lcdNumber.display(x.show_score())
