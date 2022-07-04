@@ -19,8 +19,7 @@ class Window(QtWidgets.QWidget):
         self.ui.pushButton_left.clicked.connect(self.turn_player)
         self.ui.pushButton_right.clicked.connect(self.turn_player)
 
-    def keyPressEvent(self, event:PySide2.QtGui.QKeyEvent) -> None:
-        print(event.text())
+    def keyPressEvent(self, event: PySide2.QtGui.QKeyEvent) -> None:
 
         if event.text().lower() in ['w', 'ц']:
             self.turn_player('w')
@@ -77,7 +76,7 @@ class Window(QtWidgets.QWidget):
                 "Вниз": "s",
                 "Влево": "a",
                 "Вправо": "d"}
-        print(key)
+
         if key is False:
             x.input_play(tern.get(self.sender().text()))
         else:
